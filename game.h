@@ -253,6 +253,20 @@ bool Game::checkEndCondition(){
             return true;
         }
     }
+
+    // 조건 3: 최대 턴 수에 도달한 경우
+    if (turn >= MAX_TURN) {
+        if (yangScore > gangScore) {
+            winner = 0; // Yang 승리
+        } else if (gangScore > yangScore) {
+            winner = 1; // Gang 승리
+        } else {
+            winner = -1; // 무승부
+        }
+        return true;
+    }
+
+    return false; // 게임이 끝나지 않았음을 나타냄
 }
 
 void Game::bomb(int bombType, int depth){
