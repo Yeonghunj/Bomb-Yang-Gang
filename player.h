@@ -24,30 +24,30 @@ Player::Player(int initRow, int initCol) : curRow(initRow), curCol(initCol), sco
 
 int Player::getRow() {
     /* Your code needs to start here*/
-
+    return curRow;
 }
 
 int Player::getCol() {
     /* Your code needs to start here*/
-
+    return curCol;
 }
 
 int Player::getScore() {
     /* Your code needs to start here*/
-
+    return score;
 }
 
 void Player::setRow(int newRow) {
     /* Your code needs to start here*/
-
+    curRow=newRow;
 }
 
 void Player::setCol(int newCol) {
     /* Your code needs to start here*/
-
+    curCol=newCol;
 }
 
 void Player::setScore(int newScore) {
     /* Your code needs to start here*/
-
+    score=newScore;
 }
