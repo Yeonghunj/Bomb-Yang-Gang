@@ -303,6 +303,54 @@ void Game::bomb(int bombType, int depth){
         curRow = Gang.getRow();
         curCol = Gang.getCol();
     }
+
+    switch (bombType) {
+        case 0: // Square bomb
+            for (int i = curRow - depth + 1; i <= curRow + depth - 1; i++) {
+                for (int j = curCol - depth + 1; j <= curCol + depth - 1; j++) {
+                    if (i >= 0 && i < mainGameBoard.getBoardSize() && j >= 0 && j < mainGameBoard.getBoardSize()) {
+                        int heightBefore = mainGameBoard.getBlockArray()[i][j].getHeight();
+                        int newHeight = std::max(0, heightBefore - depth);  // 최소 높이를 0으로 설정
+                        mainGameBoard.getBlockArray()[i][j].setHeight(newHeight);
+                        mainGameBoard.setBombMap(i, j, depth);
+
+                        // Update the score
+                        if (turn % 2 == 0) { // Yang's turn
+                            Yang.setScore(Yang.getScore() + (heightBefore - newHeight));
+                        } else { // Gang's turn
+                            Gang.setScore(Gang.getScore() + (heightBefore - newHeight));
+                        }
+                    }
+                }
+            }
+            break;
+        case 1: // Recursively calling left, top, right, down
+            bomb1(curRow, curCol, depth);
+            for (int i = 0; i < mainGameBoard.getBoardSize(); i++) {
+                for (int j = 0; j <mainGameBoard.getBoardSize(); j++) {
+                    int heightBefore = mainGameBoard.getBlockArray()[i][j].getHeight();
+                    int newHeight = std::max(0, heightBefore - mainGameBoard.getBombMap()[i][j]);  // 폭탄 깊이에 따라 감소량 설정
+                    mainGameBoard.getBlockArray()[i][j].setHeight(newHeight);
+                    // 점수 업데이트
+                    if (turn % 2 == 0) { // Yang's turn
+                        Yang.setScore(Yang.getScore() + (heightBefore - newHeight));
+                        } else { // Gang's turn
+                            Gang.setScore(Gang.getScore() + (heightBefore - newHeight));
+                        }                
+                    }
+                }
+            break;
+        case 2: // Recursively calling but diagonal
+            bomb2(curRow, curCol, depth);
+            break;
+        case 3: // Recursively calling left, top, right, down but, damage 1
+            int diffcenter = 1;
+            for (int i = 0; i < depth - 1; i++) {
+                diffcenter *= 3;
+            }
+            bomb3(curRow, curCol, diffcenter);
+            break;
+    }
 }
 
 void Game::printBombMap(){
