@@ -378,6 +378,35 @@ void Game::bomb1(int curRow, int curCol, int depth) {
 
 }
 
+void Game::bomb2(int curRow, int curCol, int depth) {
+    if (depth <= 0) return;
+
+    if (curRow >= 0 && curRow < mainGameBoard.getBoardSize() && curCol >= 0 && curCol < mainGameBoard.getBoardSize()) {
+        int heightBefore = mainGameBoard.getBlockArray()[curRow][curCol].getHeight();
+        int newHeight = std::max(0, heightBefore - depth);  // 폭탄 깊이에 따라 감소량 설정
+        mainGameBoard.getBlockArray()[curRow][curCol].setHeight(newHeight);
+        mainGameBoard.setBombMap(curRow, curCol, depth);
+
+        // 점수 업데이트
+        if (turn % 2 == 0) { // Yang's turn
+            Yang.setScore(Yang.getScore() + (heightBefore - newHeight));
+        } else { // Gang's turn
+            Gang.setScore(Gang.getScore() + (heightBefore - newHeight));
+        }
+    }
+
+    int diffcenter=1;
+    for(int i=0; i<depth-2; i++){
+        diffcenter *= 3;
+    }
+
+    // 재귀 호출
+    bomb2(curRow - diffcenter, curCol - diffcenter, depth - 1); // Up-Left
+    bomb2(curRow - diffcenter, curCol + diffcenter, depth - 1); // Up-Right
+    bomb2(curRow + diffcenter, curCol - diffcenter, depth - 1); // Down-Left
+    bomb2(curRow + diffcenter, curCol + diffcenter, depth - 1); // Down-Right
+}
+
 void Game::printBombMap(){
     /* Change this code as you need */
     /* Do not break empty blocks for foramt or endl */
