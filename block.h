@@ -19,7 +19,7 @@ Block::Block() {
 
 int Block::getHeight() {
     /* Your code needs to start here*/
-
+    return height;
 }
 
 void Block::setHeight(int afterOperation) {
