@@ -286,7 +286,23 @@ void Game::bomb(int bombType, int depth){
     If depth <= 0 just return 
     (Do nothing. It will be regarded as passing the turn)
     */
+    // Bomb map 초기화
+    for (int i = 0; i < mainGameBoard.getBoardSize(); i++) {
+        for (int j = 0; j < mainGameBoard.getBoardSize(); j++) {
+            mainGameBoard.setBombMap(i, j, 0);
+        }
+    }
 
+    if (depth <= 0) return;
+
+    int curRow, curCol;
+    if (turn % 2 == 0) { // Yang's turn
+        curRow = Yang.getRow();
+        curCol = Yang.getCol();
+    } else { // Gang's turn
+        curRow = Gang.getRow();
+        curCol = Gang.getCol();
+    }
 }
 
 void Game::printBombMap(){
