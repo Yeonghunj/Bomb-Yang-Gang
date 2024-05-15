@@ -37,29 +37,33 @@ Board::Board(int boardSize) : boardSize(boardSize) {
 int Board::getBoardSize() {
     /* Your code needs to start here*/
     // return the board size
-
+    return boardSize;
 }
 
 Block** Board::getBlockArray() {
     /* Your code needs to start here*/
     // return the Block array 
-
+    return blockArray;
 }
 
 int** Board::getBombMap() {
     /* Your code needs to start here*/
     // return the bomb map (how bomb damaged on the turn)
-
+    return bombMap;
 }
 
 void Board::setBombMap(int curRow, int curCol, int value) {
     /* Your code needs to start here*/
     // change the bombmap values bombMap[curRow][curCol] to value
-
+    if (curRow >= 0 && curRow < boardSize && curCol >= 0 && curCol < boardSize) {
+        bombMap[curRow][curCol] = value;
+    }
 }
 
 void Board::setBlockArray(int curRow, int curCol, int value) {
     /* Your code needs to start here*/
     // change the blockarray values blockArray[curRow][curCol] to value
-
+    if (curRow >= 0 && curRow < boardSize && curCol >= 0 && curCol < boardSize) {
+        blockArray[curRow][curCol].setHeight(value);
+    }
 }
