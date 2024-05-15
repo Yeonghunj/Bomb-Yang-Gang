@@ -353,6 +353,31 @@ void Game::bomb(int bombType, int depth){
     }
 }
 
+void Game::bomb1(int curRow, int curCol, int depth) {
+    if (depth <= 0) return;
+    // 깊이에 따른 폭탄 범위 처리
+    for (int i = curRow - depth + 1; i <= curRow + depth - 1; i++) {
+        for (int j = curCol - depth + 1; j <= curCol + depth - 1; j++) {
+            if (i >= 0 && i < mainGameBoard.getBoardSize() && j >= 0 && j < mainGameBoard.getBoardSize()) {
+                    int heightBefore = mainGameBoard.getBlockArray()[i][j].getHeight();
+                    int newHeight = std::max(0, heightBefore - depth);  // 폭탄 깊이에 따라 감소량 설정
+                    
+                    if(mainGameBoard.getBombMap()[i][j]<depth){
+                    
+                    mainGameBoard.setBombMap(i, j, depth);
+                    }
+            }
+        }
+    }
+
+    // 재귀 호출
+    bomb1(curRow - 2*depth + 2, curCol, depth - 1); // Up
+    bomb1(curRow + 2*depth - 2, curCol, depth - 1); // Down
+    bomb1(curRow, curCol - 2*depth + 2, depth - 1); // Left
+    bomb1(curRow, curCol + 2*depth - 2, depth - 1); // Right
+
+}
+
 void Game::printBombMap(){
     /* Change this code as you need */
     /* Do not break empty blocks for foramt or endl */
