@@ -134,7 +134,36 @@ bool Game::move(int newRow, int newCol){
     else, move the Player and set to the newRow, newCol. Then return true
     
     */
-    
+    Player &activePlayer = turn % 2 == 0 ? Yang : Gang;
+
+    if (newRow < 0 || newRow >= mainGameBoard.getBoardSize() || newCol < 0 || newCol >= mainGameBoard.getBoardSize() || mainGameBoard.getBlockArray()[newRow][newCol].getHeight() == 0) {
+        return false;
+    }
+    if ((newRow == Yang.getRow() && newCol == Yang.getCol()) || (newRow == Gang.getRow() && newCol == Gang.getCol())) {
+        return false;
+    }
+
+    int currentRow = activePlayer.getRow();
+    int currentCol = activePlayer.getCol();
+
+    bool validMove = false;
+    if (turn % 2 == 0) { // Yang's turn
+        int rowDiff = abs(newRow - currentRow);
+        int colDiff = abs(newCol - currentCol);
+        validMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
+    } else { // Gang's turn
+        int rowDiff = abs(newRow - currentRow);
+        int colDiff = abs(newCol - currentCol);
+        validMove = rowDiff <= 1 && colDiff <= 1 && !(rowDiff == 0 && colDiff == 0);
+    }
+
+    if (!validMove) {
+        return false;
+    }
+
+    activePlayer.setRow(newRow);
+    activePlayer.setCol(newCol);
+    return true;
 }
 
 bool Game::checkEndCondition(){
