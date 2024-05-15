@@ -15,7 +15,9 @@ public:
     bool move(int newRow, int newCol);
     void bomb(int bombType, int depth);
     bool checkEndCondition();
-
+    void bomb1(int curRow, int curCol, int depth);
+    void bomb2(int curRow, int curCol, int depth);
+    void bomb3(int curRow, int curCol, int diffcenter);
     // Mutators (setters)
     void setTurn(int nextTurn);
     void setBoard(int gameMode);
@@ -167,7 +169,6 @@ bool Game::move(int newRow, int newCol){
 }
 
 bool Game::checkEndCondition(){
-    /* Your code needs to start here*/
     /* 
     You need to check conditions to decide whether the game ended or not
 
@@ -175,14 +176,15 @@ bool Game::checkEndCondition(){
     2) A player cannot move anymore
     3) The turn reached MAX_TURN(20)
 
-    If the both of the player reach to the end condition
-    We need to compare the score
+    If both players reach the end condition,
+    we need to compare the score.
 
-    If the game ended we need to set winner at here
+    If the game ended we need to set winner here:
     -1: Draw
     0: Yang win
     1: Gang win
     */
+    
     bool yangCanMove = false;
     bool gangCanMove = false;
 
@@ -215,7 +217,7 @@ bool Game::checkEndCondition(){
             break;
         }
     }
-    
+
     int yangHeight = mainGameBoard.getBlockArray()[Yang.getRow()][Yang.getCol()].getHeight();
     int gangHeight = mainGameBoard.getBlockArray()[Gang.getRow()][Gang.getCol()].getHeight();
     int yangScore = Yang.getScore();
@@ -268,6 +270,7 @@ bool Game::checkEndCondition(){
 
     return false; // 게임이 끝나지 않았음을 나타냄
 }
+
 
 void Game::bomb(int bombType, int depth){
     /* Your code needs to start here*/
@@ -468,5 +471,3 @@ void Game::printBombMap(){
     }
     return;
 }
-
-
