@@ -183,7 +183,38 @@ bool Game::checkEndCondition(){
     0: Yang win
     1: Gang win
     */
+    bool yangCanMove = false;
+    bool gangCanMove = false;
 
+    // Yang의 나이트 이동 가능성 검사
+    int yangRow = Yang.getRow();
+    int yangCol = Yang.getCol();
+    int knightMoves[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
+    for (int i = 0; i < 8; i++) {
+        int newRow = yangRow + knightMoves[i][0];
+        int newCol = yangCol + knightMoves[i][1];
+        if (newRow >= 0 && newRow < mainGameBoard.getBoardSize() && newCol >= 0 && newCol < mainGameBoard.getBoardSize() &&
+            mainGameBoard.getBlockArray()[newRow][newCol].getHeight() != 0 &&
+            !(newRow == Gang.getRow() && newCol == Gang.getCol())) {
+            yangCanMove = true;
+            break;
+        }
+    }
+
+    // Gang의 8방향 이동 가능성 검사
+    int gangRow = Gang.getRow();
+    int gangCol = Gang.getCol();
+    int surroundingMoves[8][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    for (int i = 0; i < 8; i++) {
+        int newRow = gangRow + surroundingMoves[i][0];
+        int newCol = gangCol + surroundingMoves[i][1];
+        if (newRow >= 0 && newRow < mainGameBoard.getBoardSize() && newCol >= 0 && newCol < mainGameBoard.getBoardSize() &&
+            mainGameBoard.getBlockArray()[newRow][newCol].getHeight() != 0 &&
+            !(newRow == Yang.getRow() && newCol == Yang.getCol())) {
+            gangCanMove = true;
+            break;
+        }
+    }
 }
 
 void Game::bomb(int bombType, int depth){
