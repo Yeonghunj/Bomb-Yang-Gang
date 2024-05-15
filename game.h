@@ -215,6 +215,44 @@ bool Game::checkEndCondition(){
             break;
         }
     }
+    
+    int yangHeight = mainGameBoard.getBlockArray()[Yang.getRow()][Yang.getCol()].getHeight();
+    int gangHeight = mainGameBoard.getBlockArray()[Gang.getRow()][Gang.getCol()].getHeight();
+    int yangScore = Yang.getScore();
+    int gangScore = Gang.getScore();
+
+    // 조건 1 및 2: 플레이어가 지면(0)에 도달한 경우 또는 플레이어가 더 이상 이동할 수 없는 경우
+    if (yangHeight == 0 || !yangCanMove) {
+        if (gangHeight == 0 || !gangCanMove) {
+            if (yangScore > gangScore) {
+                winner = 0; // Yang 승리
+            } else if (gangScore > yangScore) {
+                winner = 1; // Gang 승리
+            } else {
+                winner = -1; // 무승부
+            }
+            return true;
+        } else {
+            winner = 1; // Gang 승리
+            return true;
+        }
+    } 
+
+    if (gangHeight == 0 || !gangCanMove) {
+        if (yangHeight == 0 || !yangCanMove) {
+            if (yangScore > gangScore) {
+                winner = 0; // Yang 승리
+            } else if (gangScore > yangScore) {
+                winner = 1; // Gang 승리
+            } else {
+                winner = -1; // 무승부
+            }
+            return true;
+        } else {
+            winner = 0; // Yang 승리
+            return true;
+        }
+    }
 }
 
 void Game::bomb(int bombType, int depth){
