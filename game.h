@@ -407,6 +407,37 @@ void Game::bomb2(int curRow, int curCol, int depth) {
     bomb2(curRow + diffcenter, curCol + diffcenter, depth - 1); // Down-Right
 }
 
+void Game::bomb3(int curRow, int curCol, int diffcenter) {
+    if (diffcenter == 1) {
+        // 중심에서 상하좌우로 1칸씩 영향을 줌
+        for (int i = curRow - 1; i <= curRow + 1; i++) {
+            for (int j = curCol - 1; j <= curCol + 1; j++) {
+                if (i >= 0 && i < mainGameBoard.getBoardSize() && j >= 0 && j < mainGameBoard.getBoardSize()) {
+                    if (abs(i - curRow) + abs(j - curCol) == 1) { // 상하좌우로만 영향을 줌
+                        int heightBefore = mainGameBoard.getBlockArray()[i][j].getHeight();
+                        int newHeight = std::max(0, heightBefore - 1); // 최소 높이를 0으로 설정
+                        mainGameBoard.getBlockArray()[i][j].setHeight(newHeight);
+                        mainGameBoard.setBombMap(i, j, 1);
+
+                        // 점수 업데이트
+                        if (turn % 2 == 0) { // Yang's turn
+                            Yang.setScore(Yang.getScore() + (heightBefore - newHeight));
+                        } else { // Gang's turn
+                            Gang.setScore(Gang.getScore() + (heightBefore - newHeight));
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        // 재귀 호출
+        bomb3(curRow - diffcenter, curCol, diffcenter / 3); // Up
+        bomb3(curRow + diffcenter, curCol, diffcenter / 3); // Down
+        bomb3(curRow, curCol - diffcenter, diffcenter / 3); // Left
+        bomb3(curRow, curCol + diffcenter, diffcenter / 3); // Right
+    }
+}
+
 void Game::printBombMap(){
     /* Change this code as you need */
     /* Do not break empty blocks for foramt or endl */
