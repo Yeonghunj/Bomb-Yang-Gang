@@ -25,7 +25,13 @@ Board::Board(int boardSize) : boardSize(boardSize) {
     bombMap = new int* [boardSize];
     /* Your code needs to start here*/
     /* You need to make blockArray, bombMap initialize*/
-
+    for (int i = 0; i < boardSize; i++) {
+        blockArray[i] = new Block[boardSize];
+        bombMap[i] = new int[boardSize];
+        for (int j = 0; j < boardSize; j++) {
+            bombMap[i][j] = 0;  // 초기 폭탄 맵을 0으로 초기화
+        }
+    }
 };
 
 int Board::getBoardSize() {
